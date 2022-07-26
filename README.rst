@@ -422,9 +422,9 @@ as documented below.
 
 Details on each chunk type will follow in subsequent sections.
 
-The chunk size is calculated based on the :math:`s _ { p2 }` field and will
-always be a power of 2 in size.  The total chunk size, in bytes, including the
-header can be calculated by:
+The chunk size is calculated based on the s\ :sub:`p2` field and will always
+be a power of 2 in size.  The total chunk size, in bytes, including the header
+can be calculated by:
 
 .. math::
 
