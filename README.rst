@@ -62,17 +62,17 @@ containing all zeros.
 
 The tar format has several key drawbacks:
 
-    * You must know the size of each file before writing the header as the
-      header contains the file size.
+* You must know the size of each file before writing the header as the header
+  contains the file size.
 
-    * You can only stream information from a single file into a tar archive at
-      a time as each file must exist contiguously in the archive.
+* You can only stream information from a single file into a tar archive at a
+  time as each file must exist contiguously in the archive.
 
-    * Compression typically occurs after data is inserted into the container
-      so the entire container must be streamed.
+* Compression typically occurs after data is inserted into the container so
+  the entire container must be streamed.
 
-    * While it's possible to add to an existing tar archive, modifying the
-      contents of a file in an archive is problematic.
+* While it's possible to add to an existing tar archive, modifying the contents
+  of a file in an archive is problematic.
 
 zip
 ---
@@ -89,9 +89,9 @@ added files.
 
 The zip format fails for many of the same reasons as the tar format:
 
-    * The format does not support multiple concurrently active virtual files.
+* The format does not support multiple concurrently active virtual files.
 
-    * In-place replacement or modification is not possible.
+* In-place replacement or modification is not possible.
 
 While a standard exists for the format, there are many proprietary extensions
 that limit cross-tool support.
@@ -366,8 +366,8 @@ header.
 
 Chunk Header
 ------------
-The format of a chunk header is described in Table
-:num:`table-container-chunk-header`.  Note data is in little-endian format.
+The format of a chunk header is described below.  Note data is in little-endian
+format.
 
 .. _table-container-chunk-header:
 .. table:: Chunk header format
@@ -375,21 +375,21 @@ The format of a chunk header is described in Table
    +-------------+----------------+--------------------+----------------------+
    | Bit Offset  | Length (Bits)  | Name               | Purpose              |
    +=============+================+====================+======================+
-   | 0           | 2              | :math:`type`       | Indicates the chunk  |
+   | 0           | 2              | type               | Indicates the chunk  |
    |             |                |                    | type.                |
    +-------------+----------------+--------------------+----------------------+
-   | 2           | 3              | :math:`s _ { p2 }` | Indicates the        |
+   | 2           | 3              | s\ :sub:`p2`       | Indicates the        |
    |             |                |                    | power-of-2 size of   |
    |             |                |                    | the chunk, in bytes, |
    |             |                |                    | including this       |
    |             |                |                    | header.              |
    +-------------+----------------+--------------------+----------------------+
-   | 5           | 11             | :math:`s _ { i }`  | Indicates the        |
+   | 5           | 11             | s\ :sub:`i`        | Indicates the        |
    |             |                |                    | number of invalid    |
    |             |                |                    | bytes of data at the |
    |             |                |                    | end of the chunk.    |
    +-------------+----------------+--------------------+----------------------+
-   | 16          | 16             | :math:`crc`        | CCITT-16 systematic  |
+   | 16          | 16             | crc                | CCITT-16 systematic  |
    |             |                |                    | CRC covering all the |
    |             |                |                    | valid data in the    |
    |             |                |                    | chunk, including the |
@@ -398,7 +398,7 @@ The format of a chunk header is described in Table
    +-------------+----------------+--------------------+----------------------+
 
 The two bits for the :math:`type` field allow for four distinct types of chunks
-as documented in Table :num:`table-container-chunk-types`.
+as documented below.
 
 .. _table-container-chunk-types:
 .. table:: Chunk types
@@ -430,14 +430,14 @@ header can be calculated by:
 
    s _ { chunk } = 2 ^ { s _ { p2 } + 5 }
 
-Table :num:`table-container-chunk-sizes` lists the chunk sizes and number of
-bytes of usable payload, :math:`s _ { payload,max }`.
+The table below lists the chunk sizes and number of bytes of usable payload,
+s\ :sub`payload,max`.
 
 .. _table-container-chunk-sizes:
 .. table:: Chunk sizes
 
    +--------------------+-----------------------+------------------------------+
-   | :math:`s _ { p2 }` | :math:`s _ { chunk }` | :math:`s _ { payload, max }` |
+   | s\ :sub:`p2`       | s\ :sub:`chunk`       | s\ :sub:`payload,max`        |
    +====================+=======================+==============================+
    | 0                  | 32 bytes              | 30 bytes                     |
    +--------------------+-----------------------+------------------------------+
@@ -465,9 +465,9 @@ When insufficient data exists to use a 4096 byte long chunk, you should use the
 smallest chunk size possible that will fully contain the data.
 
 The number of valid bytes of data in the payload is calculated by knowing the
-number of invalid bytes of data in the chunk, :math:`s _ { i }`.
+number of invalid bytes of data in the chunk, s\ :sub:`i`.
 
-The number of valid bytes of data, less the header, :math:`s _ { v }` is given
+The number of valid bytes of data, less the header, s\ :sub:`v` is given
 by:
 
 .. math::
@@ -496,13 +496,13 @@ File Header Chunk
 The file header chunk will be inserted as the first chunk in an container.  The
 chunk exists to:
 
-    * Provide identifying magic numbers that can be used by the operating
-      system to identify the file contents.
+* Provide identifying magic numbers that can be used by the operating system to
+  identify the file contents.  Note that the API allows you to set an identifier
+  string to facilitate the use of this container format for multiple file types.
 
-    * Provide a container version code.
+* Provide a container version code.
 
-The file header chunk format is listed in Table
-:num:`table-container-file-header-chunk-format`.
+The file header chunk format is listed below.
 
 .. _table-container-file-header-chunk-format:
 .. table:: File header chunk
@@ -510,7 +510,7 @@ The file header chunk format is listed in Table
    +--------------+----------------+------------------------------------------+
    | Byte Offset  | Length (Bytes) | Purpose                                  |
    +==============+================+==========================================+
-   | 0            | 4              | Chunk header (:math:`type` = 0).         |
+   | 0            | 4              | Chunk header, ``type = 0``.              |
    +--------------+----------------+------------------------------------------+
    | 4            | 1              | Container format minor version code.     |
    +--------------+----------------+------------------------------------------+
@@ -548,8 +548,7 @@ Stream Start Chunk
 The stream start chunk indicates the start of a new virtual file in the
 container.
 
-The container chunk format is documented in Table
-:num:`table-container-stream-start-chunk-format`.
+The container chunk format is documented below.
 
 .. _table-container-stream-start-chunk-format:
 .. table:: Stream start chunk
@@ -557,7 +556,7 @@ The container chunk format is documented in Table
    +-------------+---------------+--------------------------------------------+
    | Bit Offset  | Length (Bits) | Purpose                                    |
    +=============+===============+============================================+
-   | 0           | 32            | Chunk header (:math:`type` = 1).           |
+   | 0           | 32            | Chunk header, ``type = 1``.                |
    +-------------+---------------+--------------------------------------------+
    | 32          | 31            | Stream ID.                                 |
    +-------------+---------------+--------------------------------------------+
@@ -574,8 +573,7 @@ Stream Continuation Chunk
 The stream continuation chunk indicates continuation of a virtual file after
 the stream start chunk.
 
-The container chunk format is documented in Table
-:num:`table-container-stream-continuation-chunk-format`.
+The container chunk format is documented below.
 
 .. _table-container-stream-continuation-chunk-format:
 .. table:: Stream start chunk
@@ -583,7 +581,7 @@ The container chunk format is documented in Table
    +-------------+---------------+--------------------------------------------+
    | Bit Offset  | Length (Bits) | Purpose                                    |
    +=============+===============+============================================+
-   | 0           | 32            | Chunk header (:math:`type` = 2).           |
+   | 0           | 32            | Chunk header, ``type = 2``.                |
    +-------------+---------------+--------------------------------------------+
    | 32          | 31            | Stream ID.                                 |
    +-------------+---------------+--------------------------------------------+
@@ -606,7 +604,7 @@ that the *Stream Start Chunk* requires a chunk size of at least 128 bytes in
 length.
 
 The fill chunk is simply a chunk header with a type set to 3.  The invalid byte
-count, :math:`s _ { i }`, is ignored for fill chunks and should be set to 0
+count, s\ :sub:`i`, is ignored for fill chunks and should be set to 0
 as fill chunks, by definition, contain no valid data.
 
 Note that, due the fact that chunks are always multiples of 2 in size, adjacent
