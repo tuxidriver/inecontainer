@@ -19,7 +19,14 @@
 cmake_minimum_required(VERSION 3.16.3)
 project(inecontainer LANGUAGES CXX)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
+SET(CMAKE_CXX_STANDARD 14)
+
+# Allow building either static or shared libraries
+set(${PROJECT_NAME}_TYPE CACHE STRING "Static or shared library")
+set_property(CACHE ${PROJECT_NAME}_TYPE PROPERTY STRINGS "SHARED;STATIC")
+IF(NOT ${${PROJECT_NAME}_TYPE})
+    SET(${PROJECT_NAME}_TYPE STATIC)
+ENDIF()
 
 add_library(${PROJECT_NAME} STATIC
             source/container_status_base.cpp
@@ -48,6 +55,8 @@ add_library(${PROJECT_NAME} STATIC
             source/stream_start_chunk.cpp
             source/stream_data_chunk.cpp
 )
+
+set_property(TARGET ${PROJECT_NAME} PROPERTY POSITION_INDEPENDENT_CODE 1)
 
 target_include_directories(${PROJECT_NAME} PUBLIC "include")
 include_directories("include")
