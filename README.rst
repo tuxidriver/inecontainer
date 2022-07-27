@@ -159,6 +159,8 @@ If you wish to create a debug build, change the qmake line to:
 Note that the qmake build environment currently does not have an install target
 defined.
 
+The qmake build environment will always build a static library.
+
 
 cmake
 -----
@@ -182,6 +184,10 @@ To install, simply run
 .. code-block:: bash
 
    make install
+
+You can optionally also include ``-Dinecontainer_TYPE=SHARED`` or
+``-Dinecontainer_TYPE=STATIC`` to specifically build as a shared or static
+library respectively.  If not specified, cmake will build a static library.
 
 
 Using inecontainer
