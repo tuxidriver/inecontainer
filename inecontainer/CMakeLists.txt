@@ -28,7 +28,7 @@ IF(NOT ${${PROJECT_NAME}_TYPE})
     SET(${PROJECT_NAME}_TYPE STATIC)
 ENDIF()
 
-add_library(${PROJECT_NAME} STATIC
+add_library(${PROJECT_NAME} ${${PROJECT_NAME}_TYPE}
             source/container_status_base.cpp
             source/container_status.cpp
             source/container_impl.cpp
